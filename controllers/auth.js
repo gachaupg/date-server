@@ -29,16 +29,21 @@ export const registerUser = async (req, res, next) => {
   const {
     email,
     password,
+    gender,
+    images,
     phone,
+    county,
+    fname,
+    lname,
+    dob,
+    location,
     avatar,
     name,
-    userName,
+    profilePicture,
+ 
     date,
-    subscribers,
-    subscribed,
-    unSubscribed,
+   
     isAdmin,
-    img,
     country,
   } = req.body;
   try {
@@ -60,15 +65,18 @@ export const registerUser = async (req, res, next) => {
 
     const result = await UserModal.create({
       email,
-      unSubscribed,
-      avatar,
-      subscribers,
-      subscribed,
-      userName,
+     
       password: hashedPassword,
-      name,
+      fname,
+      gender,
+      images,
+      lname,
+      dob,
+      profilePicture,
+      location,
+      county,
       isAdmin,
-      img,
+      
       phone,
       country,
       date,
@@ -79,6 +87,15 @@ export const registerUser = async (req, res, next) => {
         phone: result.phone,
         email: result.email,
         country: result.country,
+        county:result.county,
+        dob:result.dob,
+        fname:result.fname,
+        lname:result.lname,
+        location:result.location,
+        images:result.images,
+        profilePicture:result.profilePicture,
+        gender:result.gender,
+
         img: result.img,
         id: result._id,
         isAdmin: result.isAdmin,
@@ -407,11 +424,8 @@ export const signout = (req, res) => {
 
 export const getUsers = async (req, res) => {
   try {
-    // const tours = await UserModal.find();
-    // res.status(200).json(tours);
-
-    const users = await UserModal.find();
-    res.status(201).json(users);
+    const users = await UserModal.find(); // Fetch users from your database
+    res.status(200).json(users); // Send the retrieved users in the response
   } catch (error) {
     res.status(404).json({ message: "Something went wrong" });
   }
@@ -466,31 +480,26 @@ export const updateUser = async (req, res) => {
 export const updateSeller = async (req, res) => {
   const { id } = req.params;
   const {
-    payemail,
-    payname,
+    email,
+    password,
+    gender,
     images,
-    payuserid,
-    trxref,
-    message,
-    adTitle,
-    adSize,
-    asImages,
-    adVideos,
-    adAmount,
-    adDesc,
-    status,
-    amount,
+    phone,
     county,
-    paytitle,
-    street,
-    title,
-    desc,
+    fname,
+    lname,
+    dob,
+    location,
+    avatar,
+    name,
+    profilePicture,
+ 
+    date,
+   
+    isAdmin,
+    country,
+  
     
-    twitter,
-    size,
-    road,
-    houseNo,
-    tell,
   } = req.body;
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -498,28 +507,24 @@ export const updateSeller = async (req, res) => {
     }
 
     const updateduser = {
-      title,
-      payemail, payname, paytitle, payuserid, amount,
+      email,
+      password,
+      gender,
       images,
+      phone,
       county,
-      street,
-      road,
-      houseNo,
-      tell,
-      desc,
-      Ig:new Date(),
-      twitter,
-      trxref,
-      adTitle,
-      adSize,
-      asImages,
-      adDesc,
-      adVideos,
-      adAmount,
-      message,
-      status,
-      size,
-      isSeller: true,
+      fname,
+      lname,
+      dob,
+      location,
+      avatar,
+      name,
+      profilePicture,
+   
+      date,
+     
+      isAdmin,
+      country,
       updatedAt: new Date(),
       _id: id,
     };

@@ -13,8 +13,10 @@ const userSchema = new mongoose.Schema(
       default:
         'https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg',
     },
-    name: { type: String },
-    code: { type: String },
+    fname: { type: String },
+    lname: { type: String },
+    dob: { type: Date },
+
     email: {
       type: String,
       unique: true,
@@ -37,35 +39,20 @@ const userSchema = new mongoose.Schema(
       select: false,
     },
     // seller
-    title:{type:String},
-    payemail:{type:String},
-    isBought:{type:Boolean,default:false},
+    location:{type:String},
+    county:{type:String},
+    country:{type:String},
 
-    paytitle:{type:String},
+    age:{type:String},
     amount:{type:Number,default:0},
-    payname:{type:String},
-    payuserid:{type:String},
-    trxref:{type:String},
-    message:{type:String},
-    status:{type:String},
-    hellp:{type:String},
-    adTitle:{type:String},
-    adSize:{type:String},
-    adDesc:{type:String},
-    adAmount:{type:Number},
-    adImages:{type:Array},
-    adVideos:{type:Array},
-    size:{type:String},
-    twitter:{type:String},
-    Ig:{type:String},
+    hours:{type:Number,default:0},
+    
     desc:{type:String},
     images:{type:Array},
     county:{type:String},
-    street:{type:String},
-    road:{type:String},
+    
     phone:{type:Number},
-    houseNo:{type:String},
-    tell:{type:String},
+    
     avatar: {
       type:String
     },

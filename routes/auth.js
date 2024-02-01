@@ -27,10 +27,10 @@ router.post('/activate-user',activateUser)
 router.post("/login", loginUser);
 router.get("/all-users", getUsers);
 router.get("/all", getAllUsers);
-router.get("/user-profile/:id", getUser);
+router.get("/single-user/:id", getUser);
 router.delete("/delete-user/:id", deleteUser);
 router.patch("/update-user/:id", updateUser);
-router.patch("/update-seller/:id", updateSeller);
+router.patch("/update/:id", updateSeller);
 router.post("/google-signin", googleSignIn);
 router.post("/forgot-password", forgotPassword);
 router.get("/reset-password/:id/:token", resetPassword);
