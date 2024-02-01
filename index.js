@@ -18,7 +18,8 @@ import passportSetup from "passport";
 import  cookieSession from "cookie-session";
 import paymentRouter from "./routes/payment.js"
 import pmgRouter from './routes/pmg.js'
-// cross origin options
+import swaggerJsdoc from "swagger-jsdoc"
+import swaggerUi from "swagger-ui-express"
 import  passport from "passport";
 const app = express();
 const corsOptions = {
@@ -45,6 +46,42 @@ app.use(cors());
 app.use(cors(corsOptions));
 
 // welcome route
+
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Arif Books Express API with Swagger",
+      version: "0.1.0",
+      description:
+        "This is aDating app API made with Express and documented with Swagger",
+      license: {
+        name: "MIT",
+        url: "https://spdx.org/licenses/MIT.html",
+      },
+      contact: {
+        name: "skills with arif",
+        url: "arif.com",
+        email: "info@email.com",
+      },
+    },
+    servers: [
+      {
+        url: "https://date-server.onrender.com/",
+      },
+    ],
+  },
+  apis: ["./routes/*.js"],
+};
+
+const specs = swaggerJsdoc(options);
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(specs)
+);
+
+
 
 app.get("/", (req, res) => {
   res.send("hello world of and   Hustles");
