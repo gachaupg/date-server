@@ -51,7 +51,7 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Arif Books Express API with Swagger",
+      title: "Dating app Express API with Swagger",
       version: "0.1.0",
       description:
         "This is aDating app API made with Express and documented with Swagger",
@@ -67,7 +67,7 @@ const options = {
     },
     servers: [
       {
-        url: "https://date-server.onrender.com/",
+        url: "http://localhost:5000",
       },
     ],
   },
