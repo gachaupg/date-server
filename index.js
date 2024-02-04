@@ -61,7 +61,7 @@ const options = {
       },
       contact: {
         name: "skills with arif",
-        url: "arif.com",
+        url: "peter.com",
         email: "info@email.com",
       },
     },
@@ -84,7 +84,7 @@ app.use(
 
 
 app.get("/", (req, res) => {
-  res.send("hello world of and   Hustles");
+  res.send("hello world of dates");
 });
 
 // all apis  app

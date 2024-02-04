@@ -1,3 +1,32 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     user:
+ *       type: object
+ *       
+ *       properties:
+ *         id:
+ *           name: string
+ *           type: name
+ *         email:
+ *           type: string
+ *           description: The title of your book
+ *         password:
+ *           type: string
+ *           description: The book explanation
+ *         gender:
+ *           type: boolean
+ *           description: Whether you have finished reading the book
+ *         createdAt:
+ *           type: string
+ *           format: date
+ *           description: The date the book was added
+ *     
+ */
+
+
+
 import express from "express";
 import {
   deleteUser,
