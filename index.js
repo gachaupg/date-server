@@ -21,6 +21,7 @@ import pmgRouter from './routes/pmg.js'
 import swaggerJsdoc from "swagger-jsdoc"
 import swaggerUi from "swagger-ui-express"
 import  passport from "passport";
+import IntaSend from "intasend-node";
 const app = express();
 const corsOptions = {
   origin: "*",
@@ -102,7 +103,8 @@ app.use('/pmg', pmgRouter)
 
 
 // pyments
-
+const PUBLISHABLE_KEY = 'ISPubKey_live_3e699d41-8880-4894-a77b-644e83645a09';
+const SECRET_KEY = 'ISSecretKey_live_a41f7e91-ea32-47e3-94a5-a6df165e184b';
 async function PaymentCallback(paymentServerResponse) {
   const paymentApiCallbackUrl =
     "https://us-central1-akcreative-fb419.cloudfunctions.net/intersendPaymentCallback";
@@ -122,7 +124,22 @@ async function PaymentCallback(paymentServerResponse) {
     console.error("Error sending payment callback:", error);
   }
 }
-
+app.post('/authenticate', (req, res) => {
+  let intasend = new IntaSend({
+      PUBLISHABLE_KEY: PUBLISHABLE_KEY,
+      SECRET_KEY: SECRET_KEY,
+      test_mode: false,
+  });
+  intasend.authenticate()
+      .then((response) => {
+          console.log(response);
+          res.send(response);
+      })
+      .catch((error) => {
+          console.log(error);
+          res.send(error);
+      });
+});
 async function PayoutCallback(payoutServerResponse) {
   const payoutApiCallbackUrl =
     "https://us-central1-akcreative-fb419.cloudfunctions.net/intersendWithdrawCallback";
@@ -161,40 +178,38 @@ app.post("/payoutCallbackUrl", (req, res) => {
 // ####  Processing payout begin  here #### //
 
 // checkout function
-app.post("/checkout", (req, res) => {
-  //initialize intasend
-  let intasend = new IntaSend(
-    (publishable_key = "ISPubKey_live_57a3d553-90af-4e55-b042-b838b354fd73"),
-    (secret_key = "ISSecretKey_live_0e62d2e8-6ba7-41e2-afae-9352744eb3d9"),
-    (test_mode = false) // set to false when going live
-  );
-  // initialize collection
-  let collection = intasend.collection();
-  // console.log(req.body)
-  // create invoice
-  collection
-    .charge({
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      email: req.body.email,
-      method: req.body.method,
-      host: req.body.host,
-      amount: req.body.amount,
-      currency: req.body.currency,
-      api_ref: req.body.api_ref,
-      redirect_url: req.body.redirect_url,
-    })
-    // handle response from intasend
-    .then((response) => {
-      console.log(response.url);
-      return res.send(response);
-    })
-    // handle error
-    .catch((err) => {
-      console.log(err);
-      res.send(err);
-    });
+
+const intaSend = new IntaSend(
+  'ISPubKey_test_c16b7bc5-a077-44a2-8e3d-cf2b5768deab',
+  'ISSecretKey_test_3c0eeed4-332a-4cd1-a3b1-e13c0fe173bf',
+  true // Test mode: Set true for the test environment
+);
+
+
+app.post('/checkout', (req, res) => {
+  const collection = intaSend.collection();
+
+  collection.charge({
+      first_name: req.body,
+      last_name: req.body,
+      email: req.body,
+      host: 'https://yourwebsite.com',
+      amount: req.body,
+      currency: req.body,
+      api_ref: 'test',
+      redirect_url: 'http://example.com/thank-you'
+  })
+  .then((resp) => {
+      // Redirect user to URL to complete payment
+      console.log(`Charge Response:`, resp);
+      res.json(resp); // Send the response back to the client
+  })
+  .catch((err) => {
+      console.error(`Charge Error:`, err);
+      res.status(500).json({ error: 'An error occurred' }); // Send an error response
+  });
 });
+
 
 // Processing payout end  here //
 
@@ -203,15 +218,10 @@ app.post("/checkout", (req, res) => {
 // mpesa withdrawal function
 
 app.post("/withdrawMpesa", (req, res) => {
-  let intasend = new IntaSend(
-    "ISPubKey_live_57a3d553-90af-4e55-b042-b838b354fd73",
-    "ISSecretKey_live_0e62d2e8-6ba7-41e2-afae-9352744eb3d9",
-    false // Test ? Set true for test environment
-  );
 
   // make payment
   // console.log(req.body);
-  let payouts = intasend.payouts();
+  let payouts = intaSend.payouts();
   payouts
     .mpesa({
       currency: req.body.currency,
