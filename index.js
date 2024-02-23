@@ -190,12 +190,12 @@ app.post('/checkout', (req, res) => {
   const collection = intaSend.collection();
 
   collection.charge({
-      first_name: req.body,
-      last_name: req.body,
-      email: req.body,
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      email: req.body.email,
       host: 'https://yourwebsite.com',
-      amount: req.body,
-      currency: req.body,
+      amount: req.body.amount,
+      currency: req.body.currency,
       api_ref: 'test',
       redirect_url: 'http://example.com/thank-you'
   })
@@ -230,6 +230,7 @@ app.post("/withdrawMpesa", (req, res) => {
           name: req.body.name,
           account: req.body.account,
           amount: req.body.amount,
+          currency:req.body.currency,
           narrative: req.body.narrative,
         },
       ],
@@ -279,15 +280,11 @@ app.post("/withdrawMpesa", (req, res) => {
 // bank withdrawal function
 
 app.post("/withdrawBank", (req, res) => {
-  let intasend = new IntaSend(
-    "ISPubKey_live_57a3d553-90af-4e55-b042-b838b354fd73",
-    "ISSecretKey_live_0e62d2e8-6ba7-41e2-afae-9352744eb3d9",
-    false // Test ? Set true for test environment
-  );
+  
 
   // make payment
   console.log(req.body);
-  let payouts = intasend.payouts();
+  let payouts = intaSend.payouts();
   payouts
     .mpesa({
       currency: req.body.currency,
@@ -297,6 +294,7 @@ app.post("/withdrawBank", (req, res) => {
           account: req.body.account,
           bank_code: req.body.bank_code,
           amount: req.body.amount,
+          currency:req.body.currency,
           narrative: req.body.narrative,
         },
       ],
