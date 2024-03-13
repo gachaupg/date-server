@@ -180,8 +180,8 @@ app.post("/payoutCallbackUrl", (req, res) => {
 // checkout function
 
 const intaSend = new IntaSend(
-  'ISPubKey_test_c16b7bc5-a077-44a2-8e3d-cf2b5768deab',
-  'ISSecretKey_test_3c0eeed4-332a-4cd1-a3b1-e13c0fe173bf',
+  'ISPubKey_test_9b64a482-47ee-4a15-9042-0e7e1f17f44b',
+  'ISSecretKey_test_3bd9e00b-b8eb-4b5e-8c3c-c608f85349ec',
   true // Test mode: Set true for the test environment
 );
 
@@ -194,6 +194,7 @@ app.post('/checkout', (req, res) => {
       last_name: req.body.last_name,
       email: req.body.email,
       host: 'https://yourwebsite.com',
+      
       amount: req.body.amount,
       currency: req.body.currency,
       api_ref: 'test',
